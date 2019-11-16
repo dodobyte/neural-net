@@ -6,7 +6,7 @@ This is a basic handcrafted neural network implementation. It's not much but the
 We use only dense (linear) layers and sigmoid activation functions. The code was hardcoded to classify mnist but you can easily modify it for other purposes.
 We also take advange of vectorized operations with numpy, the version with loops is many times slower on my cpu.
 
-Default network shape is (784,40,10), minibatch size is 10 and learning rate is 4.0. They are kind of arbitrary, I didn't take time to optimize them. With the default hyperparameters network achieves 95% accuracy in a few epochs.
+Default network shape is (784,40,10), minibatch size is 10 and learning rate is 3.0. With the default hyperparameters network achieves 95% accuracy.
 
 ### Data
 I downloaded mnist data from: http://yann.lecun.com/exdb/mnist/. The data is also in this repository unmodified.
@@ -24,7 +24,7 @@ Here we can easily see how weights in a layer can affect the final gear i.e. the
 ![backprop](https://drive.google.com/uc?export=view&id=1nIFRo3lRl86xfE9aW26FUmvJ52YbPQ-2)
 
 With backpropagation, all we want is to know how much each weight affects the final cost. Once we know that, we can easily modify weights to decrease the cost. The naive approach is to calculate &part;C/&part;w directly for each weight. In that case we modify a weight just a bit, send the input again, check how much the cost has changed. There is a big problem here. For each weight, we have to send the input again and calculate the whole forward pass. That's obviously not practical.
-Backpropagation solves this problem in a way that we calculate the derivatives only with a single forward pass. 
+Backpropagation solves this problem in a way that we calculate the derivatives only with a single forward pass.
 
 #### Gradient of W<sup>0</sup>
 Here is how it's work. We start from the final gear (cost) and ask ourselves which gear directly affects it? As you can tell from the image, the answer is A<sup>0</sup>, so we take derivative &part;C/&part;a<sup>0</sup> and note it somewhere. Remember that the derivative only tells how much A<sup>0</sup> affects C. Next we ask which gear directly affects A<sup>0</sup>, it's Z<sup>0</sup>. We calculate &part;z<sup>0</sup>/&part;a<sup>0</sup>. Next we ask which gear directly affects Z<sup>0</sup>, there are actually two, W<sup>0</sup> and A<sup>-1</sup>. Let's continue with W<sup>0</sup> first and calculate &part;z<sup>0</sup>/&part;w<sup>0</sup>.
@@ -35,7 +35,7 @@ Now we have three pieces of information. How much W<sup>0</sup> affects Z<sup>0<
 Here's the crucial part, since we already calculated how much Z<sup>0</sup> affects the cost, we can consider it as a checkpoint. So instead of calculating how much W<sup>1</sup> affects the cost directly, we can calculate how much it affects the Z<sup>0</sup>. As we already know how much Z<sup>0</sup> affects cost. Finally, we can multiply these two derivatives and recover the total effects i.e. how much W<sup>1</sup> affects the final cost.
 
 #### Gradient of W<sup>-1</sup>
-So let's calculate the gradient of W<sup>1</sup>. Which gear directly affects Z<sup>0</sup>? They are W<sup>0</sup> and A<sup>-1</sup>, but we already calculated W<sup>0</sup>, and we're trying to get to W<sup>1</sup>. Hence, we continue with A<sup>-1</sup> and calculate &part;z<sup>0</sup>/&part;a<sup>-1</sup>. Next, which gear directly affects A<sup>-1</sup>? It's Z<sup>-1</sup>. We calculate &part;a<sup>-1</sup>/&part;z<sup>-1</sup>. Next, which gear directly affects the Z<sup>-1</sup>? 
+So let's calculate the gradient of W<sup>1</sup>. Which gear directly affects Z<sup>0</sup>? They are W<sup>0</sup> and A<sup>-1</sup>, but we already calculated W<sup>0</sup>, and we're trying to get to W<sup>1</sup>. Hence, we continue with A<sup>-1</sup> and calculate &part;z<sup>0</sup>/&part;a<sup>-1</sup>. Next, which gear directly affects A<sup>-1</sup>? It's Z<sup>-1</sup>. We calculate &part;a<sup>-1</sup>/&part;z<sup>-1</sup>. Next, which gear directly affects the Z<sup>-1</sup>?
 
 Both A<sup>-2</sup> and W<sup>-1</sup>. We're interested in W<sup>-1</sup> so we calculate &part;z<sup>-1</sup>/&part;w<sup>-1</sup>. Let's phrase it. We know how much W<sup>-1</sup> affects Z<sup>-1</sup> and we know how much Z<sup>-1</sup> affects A<sup>-1</sup> and we know how much A<sup>-1</sup> affects Z<sup>0</sup>. We multiply these three derivatives and learn how much W<sup>-1</sup> affects Z<sup>0</sup>. Once that's done, we can multiply this with gradient of Z<sup>0</sup> to learn how much W<sup>-1</sup> affects the final cost, which is the gradient of W<sup>1</sup>. This is the &part;C/&part;W<sup>1</sup> equation in the third group of equations.
 

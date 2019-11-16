@@ -66,7 +66,7 @@ def zero_grad():
 		nn['gb'][i].fill(0)
 
 def optimize(n):
-	rate = 4.0	# learning rate
+	rate = 3.0	# learning rate
 	for i in range(len(nn['w'])):
 		nn['w'][i] -= (nn['gw'][i] / n) * rate
 		nn['b'][i] -= (nn['gb'][i] / n) * rate
