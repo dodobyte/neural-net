@@ -66,7 +66,7 @@ def zero_grad():
 		nn['gb'][i].fill(0)
 
 def optimize(n):
-	rate = 5.0	# learning rate
+	rate = 4.0	# learning rate
 	for i in range(len(nn['w'])):
 		nn['w'][i] -= (nn['gw'][i] / n) * rate
 		nn['b'][i] -= (nn['gb'][i] / n) * rate
@@ -95,12 +95,13 @@ def load_data():
 	return list(zip(train, train_y)), list(zip(test, test_y))
 
 def main():
+	random.seed(42)
 	train, test = load_data()
 	init_net([784,40,10]) # network shape
 
 	for epoch in range(10):
 		random.shuffle(train)
-		n = 20	# minibatch size
+		n = 10	# minibatch size
 		batches = [train[i:i+n] for i in range(0, len(train), n)]
 		for mini in batches:
 			zero_grad()
