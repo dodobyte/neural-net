@@ -105,7 +105,7 @@ def main():
 		for mini in batches:
 			zero_grad()
 			for x, y in mini:
-				a = forward(x)
+				forward(x)
 				backward(y)
 			optimize(n)
 
