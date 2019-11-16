@@ -1,4 +1,4 @@
-## A small and simple neural network
+## A small and simple neural network in Python
 
 This is a basic handcrafted neural network implementation. It's not much but the motive was to prove myself that I understood backpropagation.
 
@@ -6,7 +6,7 @@ This is a basic handcrafted neural network implementation. It's not much but the
 We use only dense (linear) layers and sigmoid activation functions. The code was hardcoded to classify mnist but you can easily modify it for other purposes.
 We also take advange of vectorized operations with numpy, the version with loops is many times slower on my cpu.
 
-Default network shape is (784,40,10), minibatch size is 20 and learning rate is 5.0. Ther are kind of arbitrary, I didn't take time to optimize them. With the default hyperparameters network achieves 95% accuracy in a few epochs.
+Default network shape is (784,40,10), minibatch size is 20 and learning rate is 5.0. They are kind of arbitrary, I didn't take time to optimize them. With the default hyperparameters network achieves 95% accuracy in a few epochs.
 
 ### Data
 I downloaded mnist data from: http://yann.lecun.com/exdb/mnist/. The data is also in this repository unmodified.
