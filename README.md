@@ -21,8 +21,8 @@ I like to think of a neural network as interconnected gears. I made the followin
 
 Here we can easily see how weights in a layer can affect the final gear i.e. the cost. If you rotate W<sup>0</sup> gear one cycle, how much is the cost gear rotated? That ratio is basically the gradient of W<sup>0</sup> gear.
 
-[image](https://i.imgur.com/AB8vflE.png)
-![backprop](https://i.imgur.com/AB8vflE.png)
+[image](https://i.imgur.com/4X4naE0.png)
+![backprop](https://i.imgur.com/4X4naE0.png)
 
 With backpropagation, all we want is to know how much each weight affects the final cost. Once we know that, we can easily modify weights to decrease the cost. The naive approach is to calculate &part;C/&part;w directly for each weight. In that case we modify a weight just a bit, send the input again, check how much the cost has changed. There is a big problem here. For each weight, we have to send the input again and calculate the whole forward pass. That's obviously not practical.
 Backpropagation solves this problem in a way that we calculate the derivatives only with a single forward pass.
